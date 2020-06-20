@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://db/blib_core?createDatabaseIfNotExist=true
+    username: root
+    password: qwer
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  flyway:
+    locations: filesystem:./db.migration
+    check-location: false
