@@ -6,5 +6,4 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
-    locations: filesystem:./db.migration
-    check-location: false
+    locations: filesystem:/app/src/main/resources/db/migration
