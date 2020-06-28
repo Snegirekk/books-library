@@ -7,3 +7,13 @@ spring:
 
   flyway:
     locations: filesystem:/app/src/main/resources/db/migration
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        one-indexed-parameters: true
+        size-parameter: itemsPerPage
