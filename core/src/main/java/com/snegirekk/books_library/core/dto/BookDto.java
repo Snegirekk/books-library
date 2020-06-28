@@ -1,11 +1,16 @@
 package com.snegirekk.books_library.core.dto;
 
+import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 public class BookDto {
 
     private UUID id;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String author;
 
     public UUID getId() {

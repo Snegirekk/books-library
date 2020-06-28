@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -37,7 +38,7 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/book")
-    public ExtendedBookDto createBook(@RequestBody BookDto bookDto) {
+    public ExtendedBookDto createBook(@RequestBody @Valid BookDto bookDto) {
         return bookService.createBook(bookDto);
     }
 
@@ -60,7 +61,7 @@ public class BookController {
     }
 
     @PutMapping(path = "/book/{bookId}")
-    public ExtendedBookDto updateBook(@RequestBody BookDto bookDto, @PathVariable UUID bookId) throws BookNotFoundException {
+    public ExtendedBookDto updateBook(@RequestBody @Valid BookDto bookDto, @PathVariable UUID bookId) throws BookNotFoundException {
         bookDto.setId(bookId);
         return bookService.updateBook(bookDto);
     }
