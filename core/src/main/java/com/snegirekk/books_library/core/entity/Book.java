@@ -23,8 +23,8 @@ public class Book {
     @Column
     private String author;
 
-    @Column
-    private boolean isAvailable;
+    @Column(name = "is_available")
+    private boolean available = true;
 
     public UUID getId() {
         return id;
@@ -54,11 +54,11 @@ public class Book {
     }
 
     public boolean isAvailable() {
-        return isAvailable;
+        return available;
     }
 
     public Book setAvailable(boolean available) {
-        isAvailable = available;
+        this.available = available;
         return this;
     }
 }
