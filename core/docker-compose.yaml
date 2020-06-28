@@ -6,6 +6,7 @@ services:
     volumes:
       - .:/app
       - .database/data:/var/lib/mysql
+      - .database/custom.cnf:/etc/mysql/conf.d/custom.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=qwer
       - MYSQL_USER=root
