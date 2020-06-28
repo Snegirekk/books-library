@@ -4,6 +4,8 @@ target/
 !**/src/main/**
 !**/src/test/**
 .database/data
+var
+!var/log/.gitkeep
 
 ### STS ###
 .apt_generated

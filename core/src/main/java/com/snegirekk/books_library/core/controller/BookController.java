@@ -13,11 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-public class BookController {
+public class BookController extends V1ApiController {
 
     private final BookService bookService;
 
@@ -27,41 +28,58 @@ public class BookController {
     }
 
     @GetMapping(path = "/book")
-    public PageDto<BookDto> listBooks(Pageable pageRequest) throws InvalidPageNumberException {
+    public PageDto<BookDto> listBooks(HttpServletRequest request, Pageable pageRequest) throws InvalidPageNumberException {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
         return bookService.getPage(pageRequest);
     }
 
     @GetMapping(path = "/book/{bookId}")
-    public BookDto getBook(@PathVariable UUID bookId) throws BookNotFoundException {
+    public BookDto getBook(HttpServletRequest request, @PathVariable UUID bookId) throws BookNotFoundException {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
         return bookService.getBook(bookId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/book")
-    public ExtendedBookDto createBook(@RequestBody @Valid BookDto bookDto) {
+    public ExtendedBookDto createBook(HttpServletRequest request, @RequestBody @Valid BookDto bookDto) {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
         return bookService.createBook(bookDto);
     }
 
     @DeleteMapping(path = "/book/{bookId}")
-    public ResponseEntity<Object> deleteBook(@PathVariable UUID bookId) {
+    public ResponseEntity<Object> deleteBook(HttpServletRequest request, @PathVariable UUID bookId) {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
         bookService.delete(bookId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(path = "/book/take/{bookId}")
-    public ResponseEntity<Object> switchStateToUnavailable(@PathVariable UUID bookId) throws BookStateException {
+    public ResponseEntity<Object> switchStateToUnavailable(
+            HttpServletRequest request,
+            @PathVariable UUID bookId
+    ) throws BookStateException {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
         bookService.setBookState(bookId, false);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(path = "/book/return/{bookId}")
-    public ResponseEntity<Object> switchStateToAvailable(@PathVariable UUID bookId) throws BookStateException {
+    public ResponseEntity<Object> switchStateToAvailable(
+            HttpServletRequest request,
+            @PathVariable UUID bookId
+    ) throws BookStateException {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
         bookService.setBookState(bookId, true);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(path = "/book/{bookId}")
-    public ExtendedBookDto updateBook(@RequestBody @Valid BookDto bookDto, @PathVariable UUID bookId) throws BookNotFoundException {
+    public ExtendedBookDto updateBook(
+            HttpServletRequest request,
+            @RequestBody @Valid BookDto bookDto,
+            @PathVariable UUID bookId
+    ) throws BookNotFoundException {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
         bookDto.setId(bookId);
         return bookService.updateBook(bookDto);
     }
