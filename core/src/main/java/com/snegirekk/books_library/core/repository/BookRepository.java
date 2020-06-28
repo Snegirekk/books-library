@@ -1,4 +1,4 @@
-package com.snegirekk.books_library.core.Repository;
+package com.snegirekk.books_library.core.repository;
 
 import com.snegirekk.books_library.core.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;

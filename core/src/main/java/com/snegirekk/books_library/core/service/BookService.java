@@ -1,6 +1,6 @@
 package com.snegirekk.books_library.core.service;
 
-import com.snegirekk.books_library.core.Repository.BookRepository;
+import com.snegirekk.books_library.core.repository.BookRepository;
 import com.snegirekk.books_library.core.dto.BookDto;
 import com.snegirekk.books_library.core.dto.ExtendedBookDto;
 import com.snegirekk.books_library.core.dto.PageDto;
