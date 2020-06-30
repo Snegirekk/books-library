@@ -2,10 +2,7 @@ package com.snegirekk.books_library.review.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -20,8 +17,14 @@ public class BookReview {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID id;
+
+    @Column
     private UUID bookId;
+
+    @Column
     private String text;
+
+    @Column
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public UUID getId() {

@@ -17,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -78,6 +79,14 @@ public class V1ApiController {
             ErrorDto error = new ErrorDto(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @ExceptionHandler(RestClientException.class)
+    public ResponseEntity<ErrorDto> handleRestClientException(RestClientException exception) {
+        logger.error("External service unavailable.", exception);
+
+        ErrorDto error = new ErrorDto("External service unavailable.", HttpStatus.SERVICE_UNAVAILABLE.value());
+        return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(Exception.class)

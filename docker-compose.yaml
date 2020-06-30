@@ -1,6 +1,6 @@
 version: "3"
 services:
-  db_core:
+  db-core:
     image: mysql:5
     container_name: mysql_core
     volumes:
@@ -12,9 +12,9 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWORD=qwer
     networks:
-      - core
+      - db_core
     restart: unless-stopped
-  jdk_core:
+  app-core:
     image: maven:3.5-jdk-8-alpine
     working_dir: /app
     container_name: jdk_core
@@ -25,12 +25,13 @@ services:
       - 8808:8080
     command: mvn clean spring-boot:run
     networks:
-      - core
+      - db_core
+      - services
     restart: unless-stopped
     depends_on:
-      - db_core
+      - db-core
 
-  db_review:
+  db-review:
     image: mysql:5
     container_name: mysql_review
     volumes:
@@ -42,26 +43,27 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWORD=qwer
     networks:
-      - review
+      - db_review
     restart: unless-stopped
-  jdk_review:
+  app-review:
     image: maven:3.5-jdk-8-alpine
     working_dir: /app
     container_name: jdk_review
     volumes:
       - ./review:/app
       - ./.m2:/root/.m2
-    ports:
-      - 8809:8080
     command: mvn clean spring-boot:run
     networks:
-      - review
+      - db_review
+      - services
     restart: unless-stopped
     depends_on:
-      - db_review
+      - db-review
 
 networks:
-  core:
+  db_core:
     driver: bridge
-  review:
+  db_review:
+    driver: bridge
+  services:
     driver: bridge

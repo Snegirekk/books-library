@@ -1,13 +1,14 @@
 package com.snegirekk.books_library.review.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class ReviewDto {
 
     private UUID id;
 
-    @NotBlank
+    @NotNull
     private UUID bookId;
 
     @NotBlank
