@@ -183,3 +183,4 @@ Body example:
 * Tests
 * Refactoring
 * Bugfixes
+* Swagger documentation
