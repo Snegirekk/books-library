@@ -47,7 +47,7 @@ public class BookController extends V1ApiController {
     }
 
     @DeleteMapping(path = "/book/{bookId}")
-    public ResponseEntity<Object> deleteBook(HttpServletRequest request, @PathVariable UUID bookId) {
+    public ResponseEntity<Object> deleteBook(HttpServletRequest request, @PathVariable UUID bookId) throws BookNotFoundException {
         logger.info("{} {}", request.getMethod(), request.getRequestURL());
         bookService.delete(bookId);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -57,7 +57,7 @@ public class BookController extends V1ApiController {
     public ResponseEntity<Object> switchStateToUnavailable(
             HttpServletRequest request,
             @PathVariable UUID bookId
-    ) throws BookStateException {
+    ) throws BookStateException, BookNotFoundException {
         logger.info("{} {}", request.getMethod(), request.getRequestURL());
         bookService.setBookState(bookId, false);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -67,7 +67,7 @@ public class BookController extends V1ApiController {
     public ResponseEntity<Object> switchStateToAvailable(
             HttpServletRequest request,
             @PathVariable UUID bookId
-    ) throws BookStateException {
+    ) throws BookStateException, BookNotFoundException {
         logger.info("{} {}", request.getMethod(), request.getRequestURL());
         bookService.setBookState(bookId, true);
         return new ResponseEntity<>(HttpStatus.OK);

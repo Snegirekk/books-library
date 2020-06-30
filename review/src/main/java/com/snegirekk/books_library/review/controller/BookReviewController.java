@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.UUID;
@@ -27,20 +28,26 @@ public class BookReviewController extends V1ApiController {
     }
 
     @GetMapping(path = "/review/{reviewId}")
-    public ExtendedReviewDto getReview(@PathVariable UUID reviewId) {
+    public ExtendedReviewDto getReview(HttpServletRequest request, @PathVariable UUID reviewId) {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
         return mapper.map(bookReviewRepository.getOne(reviewId), ExtendedReviewDto.class);
     }
 
     @PostMapping(path = "/review")
-    public ExtendedReviewDto createReview(@Valid @RequestBody ReviewDto reviewDto) {
+    public ExtendedReviewDto createReview(HttpServletRequest request, @Valid @RequestBody ReviewDto reviewDto) {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
+
         BookReview review = mapper.map(reviewDto, BookReview.class);
         bookReviewRepository.save(review);
+
         return mapper.map(review, ExtendedReviewDto.class);
     }
 
     @GetMapping(path = "/review")
-    public PageDto<ReviewDto> listReviews(@NotBlank @RequestParam UUID bookId, Pageable pageRequest) throws InvalidPageNumberException {
-        Page<BookReview> page = bookReviewRepository.findAllByBookId(bookId, pageRequest);
+    public PageDto<ReviewDto> listReviews(HttpServletRequest request, @NotBlank @RequestParam UUID bookId, Pageable pageRequest) throws InvalidPageNumberException {
+        logger.info("{} {}", request.getMethod(), request.getRequestURL());
+
+        Page<BookReview> page = bookReviewRepository.findByBookId(bookId, pageRequest);
 
         // Even when "one-indexed-parameters" configured to "true" internally Page<> starts pages counting from zero
         if (page.getTotalPages() < page.getNumber() || page.getNumber() < 0) {

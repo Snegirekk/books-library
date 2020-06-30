@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface BookReviewRepository extends JpaRepository<BookReview, UUID> {
 
-    Page<BookReview> findAllByBookId(UUID bookId, Pageable pageRequest);
+    Page<BookReview> findByBookId(UUID bookId, Pageable pageRequest);
 }
