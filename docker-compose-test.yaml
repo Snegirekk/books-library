@@ -1,0 +1,70 @@
+version: "3"
+services:
+  db-core:
+    image: mysql:5
+    container_name: mysql_core_test
+    volumes:
+      - ./core:/app
+      - ./core/.database/data-test:/var/lib/mysql
+      - ./core/.database/custom.cnf:/etc/mysql/conf.d/custom.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=qwer
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=qwer
+    networks:
+      - db_core
+    restart: unless-stopped
+  app-core:
+    image: maven:3.5-jdk-8-alpine
+    working_dir: /app
+    container_name: jdk_core_test
+    volumes:
+      - ./core:/app
+      - ./.m2:/root/.m2
+    ports:
+      - 8808:8080
+    command: mvn clean -Dspring.profiles.active=test test
+    networks:
+      - db_core
+      - services
+    restart: "no"
+    depends_on:
+      - db-core
+      - app-review
+
+  db-review:
+    image: mysql:5
+    container_name: mysql_review_test
+    volumes:
+      - ./review:/app
+      - ./review/.database/data-test:/var/lib/mysql
+      - ./review/.database/custom.cnf:/etc/mysql/conf.d/custom.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=qwer
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=qwer
+    networks:
+      - db_review
+    restart: unless-stopped
+  app-review:
+    image: maven:3.5-jdk-8-alpine
+    working_dir: /app
+    container_name: jdk_review_test
+    volumes:
+      - ./review:/app
+      - ./.m2:/root/.m2
+    command: mvn clean -Dspring.profiles.active=test test
+    networks:
+      - db_review
+      - services
+    restart: "no"
+    depends_on:
+      - db-review
+
+networks:
+  db_core:
+    driver: bridge
+  db_review:
+    driver: bridge
+  services:
+    driver: bridge
